@@ -1,16 +1,26 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const port = 3333
-const router = require('./routes/userRoutes')
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const routes = require('./src/routes');
+const app = express();
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-app.use(cors())
+// Configuração de CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
+app.options('*', cors());  // Lidar com requisições OPTIONS
 
-app.use(router)
+// Middlewares para parsing e uploads
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
-module.exports = app
+
+// Rotas
+app.use('/', routes);
+
+// Iniciar servidor
+const port = process.env.PORT || 3306;
+app.listen(port, () => console.log(`Servidor rodando na porta ${port}`))
