@@ -59,10 +59,12 @@ export default function EditarInstituicao() {
                 setTimeout(() => {
                     setModalDelete(false);
                     setId(" ");
+                    setMessage("")
                 }, 2000);
             } else {
                 setMessage(response.data.message);
                 setMessageTipo("error");
+                setMessage("")
             }
         } catch (error: any) {
             // Acessando a mensagem de erro e definindo as mensagens de erro corretamente

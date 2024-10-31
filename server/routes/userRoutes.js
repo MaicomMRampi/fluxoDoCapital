@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/uploadImagem');
-
+const uploadDoc = require('../config/uploadDoc');
 
 
 // ... (código dos módulos multer, mercado pago, etc.)
@@ -11,12 +11,14 @@ const upload = require('../config/uploadImagem');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 // const paymentController = require('../controllers/paymentController');
-// const assetController = require('../controllers/assetController');
-// const expenseController = require('../controllers/expenseController');
-// const investmentController = require('../controllers/investmentController');
+const assetController = require('../controllers/assetController');
+const expenseController = require('../controllers/expenseController');
+const investmentController = require('../controllers/investmentController');
+const nomeFundoController = require('../controllers/nomeFundoController');
+const nomeAcaoController = require('../controllers/nomeAcaoController');
 // const categoryController = require('../controllers/categoryController');
 // const paymentMethodController = require('../controllers/paymentMethodController');
-// const bankController = require('../controllers/bankController');
+const bankController = require('../controllers/bankController');
 // const billController = require('../controllers/billController')
 // const budgetController = require('../controllers/budgetController')
 
@@ -32,7 +34,7 @@ router.post('/api/postusers', userController.createUser);
 router.post('/api/atualizacadastro', userController.updateUser);
 router.post('/api/upload', upload.single('image'), userController.uploadImage);
 router.put('/api/fechamodalboasvindas', userController.closeModal);
-// //router.get('/api/downloaddoc', userController.downloadDoc); // Não está sendo usada no código original
+
 
 
 // // Rotas de Pagamento
@@ -48,8 +50,8 @@ router.put('/api/fechamodalboasvindas', userController.closeModal);
 
 
 // // Rotas de Patrimônio
-// router.post('/api/postpatrimonio', uploaddoc.single('document'), assetController.createAsset);
-// router.get('/api/buscabem', assetController.getAssets);
+router.post('/api/postpatrimonio', uploadDoc.single('document'), assetController.createAsset);
+router.get('/api/buscabem', assetController.getAssets);
 // router.post('/api/despesadeconsumo', assetController.createAssetExpense);
 // router.put('/api/inativarpatrimonio', assetController.deactivateAsset);
 // router.get('/api/detalhespatrimonio', assetController.getAssetDetails);
@@ -63,50 +65,39 @@ router.put('/api/fechamodalboasvindas', userController.closeModal);
 
 
 // // Rotas de Tipo de Despesa
-// router.post('/api/novotipodespesa', expenseController.createExpenseType);
-// router.get('/api/buscatipodespesa', expenseController.getExpenseTypes);
-// router.delete('/api/deletatipodespesa', expenseController.deleteExpenseType);
+router.post('/api/novotipodespesa', expenseController.createExpenseType);
+router.get('/api/buscatipodespesa', expenseController.getExpenseTypes);
+router.delete('/api/deletatipodespesa', expenseController.deleteExpenseType);
 
 
 
 
 // // Rotas de Fundo Imobiliário (Nome)
-// router.post('/api/novonome', investmentController.createFundName);
-// router.get('/api/buscanomefundonovo', investmentController.getFundNames);
-// router.delete('/api/deletanomefundonovo', investmentController.deleteFundName);
+router.post('/api/novonome', nomeFundoController.createFundName);
+router.get('/api/buscanomefundonovo', nomeFundoController.getFundNames);
+router.delete('/api/deletanomefundonovo', nomeFundoController.deleteFundName);
 
 
 
 // // Rotas de Nome de Ação
-// router.post('/api/novonomeacao', investmentController.createStockName);
-// router.get('/api/buscanomeacao', investmentController.getStockNames);
-// router.delete('/api/deletanomeacao', investmentController.deleteStockName);
+router.post('/api/novonomeacao', nomeAcaoController.criarNomeAcao);
+router.get('/api/buscanomeacao', nomeAcaoController.buscaNomeAcao);
+router.delete('/api/deletanomeacao', nomeAcaoController.deletarNomeAcao);
 
-
-
-
-// // Rotas de Proventos
-// //router.get('/api/proventos', investmentController.getDividends); //rota nao esta sendo usada no front
-// router.post('/api/proventos', investmentController.createDividend);
-
-
-
-
-// // Rotas de Dividendos
-// router.get('/api/dividendos', investmentController.getDividends); //rota nao esta sendo usada no front
 
 
 // // Rotas de Investimentos
-// router.post('/api/novoinvestimento', investmentController.createInvestment);
-// router.get('/api/meusinvestimentos', investmentController.getMyInvestments);
-// router.put('/api/atualizavalor', investmentController.updateInvestmentValue);
-// router.put('/api/vendacotasfii', investmentController.sellFundShares);
-// router.delete('/api/deletaInvestimento', investmentController.deleteInvestment);
-// router.post('/api/sacarvencido', investmentController.withdrawMaturedInvestment);
-// router.get('/api/transacoes', investmentController.getTransactions);
-// router.delete('/api/deletatransacao', investmentController.deleteTransaction);
-// router.get('/api/lucratividade', investmentController.getProfitability);
-// router.post('/api/addjuros', investmentController.addInterest);
+router.post('/api/novoinvestimento', investmentController.criarInvestimento);
+router.get('/api/meusinvestimentos', investmentController.obterMeusInvestimentos);
+// router.put('/api/atualizavalor', investmentController.atualizarValorInvestimento);
+// router.put('/api/vendacotasfundoimobiliario', investmentController.venderCotasFundoImobiliario);
+// router.delete('/api/deletainvestimento', investmentController.deletarInvestimento);
+// router.post('/api/sacarvencido', investmentController.sacarInvestimentoVencido);
+// router.get('/api/transacoes', investmentController.obterTransacoes);
+// router.delete('/api/deletatransacao', investmentController.deletarTransacao);
+// router.get('/api/lucratividade', investmentController.obterLucratividade);
+// router.post('/api/adicionarjuros', investmentController.adicionarJuros);
+
 
 
 
@@ -148,9 +139,9 @@ router.put('/api/fechamodalboasvindas', userController.closeModal);
 
 
 // // Rotas de Banco
-// router.post('/api/banco', bankController.createBank);
-// router.get('/api/buscabanco', bankController.getBanks);
-// router.delete('/api/deletabanco', bankController.deleteBank);
+router.post('/api/banco', bankController.createBank);
+router.get('/api/buscabanco', bankController.getBanks);
+router.delete('/api/deletabanco', bankController.deleteBank);
 
 
 // // Rotas de Orçamento

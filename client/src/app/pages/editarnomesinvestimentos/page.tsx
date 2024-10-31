@@ -11,9 +11,11 @@ export default function EditarInstituicao() {
     const { tokenUsuario } = useToken()
     const [banco, setBanco] = useState([])
     const [fundoImobiliario, setFundoImobiliario] = useState([])
+
     const [modalDelete, setModalDelete] = useState(false)
     const [valor, setValor] = useState<number>()
     const [id, setId] = useState<String>()
+    console.log("🚀 ~ EditarInstituicao ~ id", id)
 
 
     const buscaNomeAção = async () => {
@@ -52,6 +54,7 @@ export default function EditarInstituicao() {
     }, [])
 
     const opemModalDelete = (id: any, valor: number) => {
+        console.log("🚀 ~ opemModalDelete ~ id", id)
         setValor(valor)
         setId(id)
         setModalDelete(true)
