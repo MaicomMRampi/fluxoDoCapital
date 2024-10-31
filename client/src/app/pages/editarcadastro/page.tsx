@@ -14,6 +14,7 @@ import { EyeFilledIcon } from '@/components/iconesCompartilhados/EyeFilledIcon';
 
 export default function EditarCadastro() {
     const { tokenUsuario, setTokenUsuario } = useToken();
+    console.log("🚀 ~ EditarCadastro ~ tokenUsuario", tokenUsuario)
     const [selectedImage, setSelectedImage] = useState<any>(null);
     const [currentImage, setCurrentImage] = useState(tokenUsuario?.imageUrl ? `http://localhost:3333/uploads/${tokenUsuario.imageUrl}` : selectedImage);
     const [message, setMessage] = useState<string>('');
