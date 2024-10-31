@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-
+const upload = require('../config/uploadImagem');
 
 
 
@@ -30,8 +30,8 @@ router.put('/api/esqueceusenha', authController.forgotPassword)
 // // Rotas de Usuário
 router.post('/api/postusers', userController.createUser);
 router.post('/api/atualizacadastro', userController.updateUser);
-// router.post('/api/upload', upload.single('image'), userController.uploadImage);
-// router.put('/api/fechamodalboasvindas', userController.closeModal);
+router.post('/api/upload', upload.single('image'), userController.uploadImage);
+router.put('/api/fechamodalboasvindas', userController.closeModal);
 // //router.get('/api/downloaddoc', userController.downloadDoc); // Não está sendo usada no código original
 
 
