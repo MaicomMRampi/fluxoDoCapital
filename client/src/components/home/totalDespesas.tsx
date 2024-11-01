@@ -15,6 +15,7 @@ export default function TotalDespesas() {
     const { visibility } = useVisibility()
     const { tokenUsuario } = useToken();
     const [DespesaSelect, setDespesaSelect] = useState<Despesa[]>([]);
+    console.log("🚀 ~ TotalDespesas ~ DespesaSelect", DespesaSelect)
     const buscaDespesaMesAtual = async () => {
         if (!tokenUsuario) return
         const response = await api.get(`/buscadespesamesatual`, {
@@ -28,10 +29,9 @@ export default function TotalDespesas() {
         buscaDespesaMesAtual();
     }, []);
 
-    const somaValores =
-        DespesaSelect &&
-        DespesaSelect.reduce((acc, despesa) => acc + despesa.valorGasto, 0);
-
+    const somaValores = Array.isArray(DespesaSelect)
+        ? DespesaSelect.reduce((acc, despesa) => acc + despesa.valorGasto, 0)
+        : 0;
 
     return (
         <Card fullWidth className="bg-BgCardPadrao p-4 text-textCards w-full">

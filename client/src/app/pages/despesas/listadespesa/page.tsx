@@ -289,7 +289,7 @@ export default function ListaDespesa() {
             case "local":
                 return <p>{despesa.local}</p>;
             case "formaDePagamento":
-                return <p>{despesa.FormaPagamento.nomeFormaPagamento}</p>;
+                return <p>{despesa.nomeFormaPagamento}</p>;
             case "pagante":
                 return <p>{despesa.pagante}</p>;
             case "responsavel":

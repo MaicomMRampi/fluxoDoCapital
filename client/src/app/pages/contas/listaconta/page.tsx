@@ -389,7 +389,7 @@ export default function ListaConta() {
                     />
 
                     <div className="flex gap-3 w-full justify-end">
-                        <Button className=" border-orange-500 text-white bg-orange-500" variant="solid" onClick={() => opemModalFechaFatura(DespesaSelect[0].mesCorrespondente)}>Fechar mês</Button>
+                        {/* <Button className=" border-orange-500 text-white bg-orange-500" variant="solid" onClick={() => opemModalFechaFatura(DespesaSelect[0].mesCorrespondente)}>Fechar mês</Button> */}
                         <Link href="/pages/contas/novaconta">
                             <Button
                                 color="primary"

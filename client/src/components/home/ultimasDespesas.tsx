@@ -21,6 +21,7 @@ export default function UltimasDespesas() {
     const { visibility } = useVisibility();
     const { tokenUsuario } = useToken();
     const [rendaFii, setRendaFii] = useState<Renda[]>([]);
+    console.log("🚀 ~ UltimasDespesas ~ rendaFii", rendaFii)
 
     const buscaDespesaMesAtual = async () => {
         if (!tokenUsuario) return;
@@ -71,7 +72,7 @@ export default function UltimasDespesas() {
                             <TableBody>
                                 {alteraOsDadosDespesas && alteraOsDadosDespesas.slice(0, 5).map((row, index) => (
                                     <TableRow key={index}>
-                                        <TableCell>{row.categoria.nomeCategoria?.toUpperCase()}</TableCell>
+                                        <TableCell>{row.nomeCategoria?.toUpperCase()}</TableCell>
                                         <TableCell>{visibility ? currency(row.valorGasto) : "****"}</TableCell>
                                     </TableRow>
                                 ))}

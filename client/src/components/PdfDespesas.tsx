@@ -114,6 +114,7 @@ const ano = new Date().getFullYear();
 const data = `${dia}/${mes}/${ano}`;
 
 interface Despesa {
+    dataAquisicao: any,
     id: number;
     dataGasto: string;
     categoria: { nomeCategoria: string };
@@ -121,6 +122,7 @@ interface Despesa {
     valorGasto: number;
     pagante: string;
     mesCorrespondente: string;
+    nomeCategoria: string;
 
 }
 
@@ -132,7 +134,7 @@ interface Props {
 
 const PdfDespesas = ({ despesas, totalFatura, usuario }: Props) => {
     const dadosAgrupadosLocal = despesas.reduce((acc: any, item: Despesa) => {
-        const { categoria: { nomeCategoria }, valorGasto } = item;
+        const { nomeCategoria, valorGasto } = item;
 
         if (!acc[nomeCategoria]) {
             acc[nomeCategoria] = {
@@ -211,8 +213,8 @@ const PdfDespesas = ({ despesas, totalFatura, usuario }: Props) => {
                     {despesas.map((despesa: Despesa) => (
                         <View style={styles.row} key={despesa.id}>
                             <Text style={styles.cell}>{despesa.id}</Text>
-                            <Text style={styles.cell}>{new Date(despesa.dataGasto).toLocaleDateString()}</Text>
-                            <Text style={styles.cell}>{despesa.categoria.nomeCategoria}</Text>
+                            <Text style={styles.cell}>{new Date(despesa.dataAquisicao).toLocaleDateString()}</Text>
+                            <Text style={styles.cell}>{despesa.nomeCategoria}</Text>
                             <Text style={styles.cell}>{despesa.local}</Text>
                             <Text style={styles.cell}>{currency(despesa.valorGasto)}</Text>
                         </View>

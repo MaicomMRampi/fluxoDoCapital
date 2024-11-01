@@ -13,14 +13,15 @@ const userController = require('../controllers/userController');
 // const paymentController = require('../controllers/paymentController');
 const assetController = require('../controllers/assetController');
 const expenseController = require('../controllers/expenseController');
+const despesaController = require('../controllers/despesaController');
 const investmentController = require('../controllers/investmentController');
 const nomeFundoController = require('../controllers/nomeFundoController');
 const nomeAcaoController = require('../controllers/nomeAcaoController');
-// const categoryController = require('../controllers/categoryController');
-// const paymentMethodController = require('../controllers/paymentMethodController');
+const categoryController = require('../controllers/categoryController');
+const paymentMethodController = require('../controllers/paymentMethodController');
 const bankController = require('../controllers/bankController');
-// const billController = require('../controllers/billController')
-// const budgetController = require('../controllers/budgetController')
+const billController = require('../controllers/billController')
+const budgetController = require('../controllers/budgetController')
 
 
 
@@ -102,39 +103,39 @@ router.get('/api/meusinvestimentos', investmentController.obterMeusInvestimentos
 
 
 // // Rotas de Categoria
-// router.post('/api/novacategoria', categoryController.createCategory);
-// router.get('/api/buscacategoria', categoryController.getCategories);
-// router.delete('/api/deletacategoria', categoryController.deleteCategory);
+router.post('/api/novacategoria', categoryController.createCategory);
+router.get('/api/buscacategoria', categoryController.getCategories);
+router.delete('/api/deletacategoria', categoryController.deleteCategory);
 
 
 // // Rotas de Forma de Pagamento
-// router.post('/api/novaformapagamento', paymentMethodController.createPaymentMethod);
-// router.get('/api/buscaformapagamento', paymentMethodController.getPaymentMethods);
-// router.delete('/api/deletaformapagamento', paymentMethodController.deletePaymentMethod);
+router.post('/api/novaformapagamento', paymentMethodController.createPaymentMethod);
+router.get('/api/buscaformapagamento', paymentMethodController.getPaymentMethods);
+router.delete('/api/deletaformapagamento', paymentMethodController.deletePaymentMethod);
 
 
 
 
 // // Rotas de Despesas
-// router.post('/api/novadespesa', expenseController.createExpense);
-// router.get('/api/buscadespesa', expenseController.getExpenses);
-// router.get('/api/buscadespesamesatual', expenseController.getCurrentMonthExpenses);
-// router.post('/api/buscadespesadata', expenseController.getExpensesByDate);
-// router.delete('/api/deletadespesa', expenseController.deleteExpense);
-// router.put('/api/updatepagante', expenseController.updatePayer);
+router.post('/api/novadespesa', despesaController.novaDespesa);
+router.get('/api/buscadespesa', despesaController.buscaDespesa);
+router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
+// router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
+// router.delete('/api/deletadespesa', despesaController.deletaDespesa);
+// router.put('/api/updatepagante', despesaController.atualizarPagante);
 
 
 // // Rotas de fatura
-// router.post('/api/fecharfatura', billController.closeBill);
+// router.post('/api/fecharfatura', expenseController.closeBill);
 
 
 // // Rotas de conta
-// router.post('/api/novaconta', billController.createBill); //Criar uma conta, na verdade, é criar uma nova fatura
-// router.get('/api/buscacontaproximavencer', billController.getBillsNextToExpire);
-// router.get('/api/buscaconta', billController.getBills);
-// router.get('/api/buscacontamesatual', billController.getCurrentMonthBills);
-// router.post('/api/buscacontadata', billController.getBillsByDate);
-// router.put('/api/pagaconta', billController.payBill);
+router.post('/api/novaconta', billController.criarContas); //Criar uma conta, na verdade, é criar uma nova fatura
+router.get('/api/buscacontaproximavencer', billController.contaProximaVencer);
+router.get('/api/buscaconta', billController.buscaConta);
+router.get('/api/buscacontamesatual', billController.contaMesAtual);
+router.post('/api/buscacontadata', billController.buscaContaData);
+router.put('/api/pagaconta', billController.pagaConta);
 
 
 
@@ -145,7 +146,7 @@ router.delete('/api/deletabanco', bankController.deleteBank);
 
 
 // // Rotas de Orçamento
-// router.post('/api/controleorcamento', budgetController.getBudgetControl)
+router.post('/api/controleorcamento', budgetController.ControleMensal)
 
 // ... (outras rotas)
 

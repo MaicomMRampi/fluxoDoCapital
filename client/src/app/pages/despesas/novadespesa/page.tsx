@@ -107,6 +107,9 @@ export default function NovaDespesa() {
             } else {
                 setMessageTipo("danger")
                 setMessage("Erro ao Cadastrar Categoria")
+                setTimeout(() => {
+                    setMessage("")
+                }, 2000)
             }
             opemModalCategoria();
         } catch (error) {
@@ -142,8 +145,12 @@ export default function NovaDespesa() {
                 }, 4000)
                 buscaFormaPagamento()
             } else {
+                setMessageTipo("danger")
+                setMessageForm("Erro ao Cadastrar Forma de Pagamento")
 
-                setMessageForm("Erro ao Cadastrar Gasto")
+                setTimeout(() => {
+                    setMessageForm("")
+                }, 2000)
             }
         } catch (error) {
             setMessageForm("Erro ao Cadastrar");
