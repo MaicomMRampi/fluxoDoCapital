@@ -111,6 +111,24 @@ const createAssetExpense = async (req, res) => {
     }
 };
 
+const getAssetsHome = async (req, res) => {
+    // Lógica para buscar patrimônios na home
+    try {
+        const dados = parseInt(req.query.id);
+
+        // Consulta SQL para buscar patrimônios pelo id do usuário
+        const [despesasPatrimonio] = await db.execute(
+            `SELECT * FROM Patrimonio WHERE idUser = ?`,
+            [dados]
+        );
+
+        res.status(200).json(despesasPatrimonio);
+    } catch (error) {
+        console.error('Erro ao buscar despesas do patrimônio:', error);
+        res.status(500).json({ message: 'Despesas não encontradas' });
+    }
+};
+
 const deleteAsset = async (req, res) => {
     // Lógica para deletar patrimônio
 };
@@ -118,6 +136,7 @@ const deleteAsset = async (req, res) => {
 module.exports = {
     createAsset,
     getAssets,
+    getAssetsHome,
     createAssetExpense,
     deleteAsset,
 };
