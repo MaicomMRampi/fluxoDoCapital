@@ -31,7 +31,7 @@ const LayoutAdmin = ({ children }: any) => {
         };
     }
     useEffect(() => {
-        if (pathname !== '/pages/register') {
+        if (pathname !== '/pages/register' && pathname !== '/pages/login') {
             alteraSeTiverVencido();
             verificaPagamento();
             const token = localStorage.getItem('token');
