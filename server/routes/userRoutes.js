@@ -56,7 +56,7 @@ router.get('/api/buscabem', assetController.getAssets);
 // router.post('/api/despesadeconsumo', assetController.createAssetExpense);
 // router.put('/api/inativarpatrimonio', assetController.deactivateAsset);
 // router.get('/api/detalhespatrimonio', assetController.getAssetDetails);
-router.get('/api/detalhespatrimoniohome', assetController.getAssetsHome); // rota nao esta sendo usada
+router.get('/api/detalhespatrimoniohome', assetController.getAssetsHome);
 // router.get('/api/buscadespesasdetalhesnome', assetController.getAssetExpensesByName); //rota nao esta sendo usada
 // router.delete('/api/deletapatrimonio', assetController.deleteAsset);
 // router.delete('/api/deletadespesapatrimonio', assetController.deleteAssetExpense);
