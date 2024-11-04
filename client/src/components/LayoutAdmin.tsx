@@ -14,7 +14,9 @@ const LayoutAdmin = ({ children }: any) => {
     const [usuarioLogado, setUsuarioLogado] = useState(false);
     const [dadosPagamento, setDadosPagamento] = useState<any>();
     const dataAtual = new Date().getTime();
+    console.log("🚀 ~ LayoutAdmin ~ dataAtual", dataAtual)
     const dataAtualDoUsuario = new Date(tokenUsuario?.dataExpiracao).getTime()
+    console.log("🚀 ~ LayoutAdmin ~ dataAtualDoUsuario", dataAtualDoUsuario)
 
     const alteraSeTiverVencido = async () => {
         if (dataAtual > dataAtualDoUsuario && tokenUsuario?.statusFinanceiro === 1) {
@@ -25,33 +27,34 @@ const LayoutAdmin = ({ children }: any) => {
     }
 
     const verificaPagamento = async () => {
-        console.log("Entrou no verificaPagamento");
         if (dataAtual > dataAtualDoUsuario && tokenUsuario?.statusFinanceiro === 0) {
+            console.log("Entrou no if");
             router.push('/pages/pagamento');
         };
     }
     useEffect(() => {
-        if (pathname !== '/pages/register' && pathname !== '/pages/login') {
+        if (pathname !== '/pages/register') {
             alteraSeTiverVencido();
             verificaPagamento();
-            // const token = localStorage.getItem('token');
-            if (tokenUsuario) {
-                // try {
-                //     const decodedToken: any = jwtDecode(token);
-                //     // Verifica se o token está expirado comparando a data atual com a data de expiração do token
-                //     if (decodedToken.exp * 1000 < Date.now()) {
-                //         // Token expirado, redirecionar para a página de login
-                //         localStorage.removeItem('token');
-                //         router.push('/pages/login');
-                //     } else {
-                //         // Token válido, usuário está logado
-                //         setUsuarioLogado(true);
-                //     }
-                // } catch (error) {
-                //     console.error('Erro ao decodificar o token:', error);
-                //     localStorage.removeItem('token');
-                //     router.push('/pages/login');
-                // }
+            const token = localStorage.getItem('token');
+            console.log("🚀 ~ useEffect ~ token", token)
+            if (token && tokenUsuario) {
+                try {
+                    const decodedToken: any = jwtDecode(token);
+                    // Verifica se o token está expirado comparando a data atual com a data de expiração do token
+                    if (decodedToken.exp * 1000 < Date.now()) {
+                        // Token expirado, redirecionar para a página de login
+                        localStorage.removeItem('token');
+                        router.push('/pages/login');
+                    } else {
+                        // Token válido, usuário está logado
+                        setUsuarioLogado(true);
+                    }
+                } catch (error) {
+                    console.error('Erro ao decodificar o token:', error);
+                    localStorage.removeItem('token');
+                    router.push('/pages/login');
+                }
             } else {
                 // Token não encontrado, redirecionar para a página de login
                 router.push('/pages/login');

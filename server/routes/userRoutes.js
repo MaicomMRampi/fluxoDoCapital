@@ -20,7 +20,7 @@ const nomeAcaoController = require('../controllers/nomeAcaoController');
 const categoryController = require('../controllers/categoryController');
 const paymentMethodController = require('../controllers/paymentMethodController');
 const bankController = require('../controllers/bankController');
-// const billController = require('../controllers/billController')
+const billController = require('../controllers/billController')
 const budgetController = require('../controllers/budgetController')
 
 
@@ -118,8 +118,8 @@ router.delete('/api/deletaformapagamento', paymentMethodController.deletePayment
 
 // // Rotas de Despesas
 // router.post('/api/novadespesa', despesaController.novaDespesa);
-// router.get('/api/buscadespesa', despesaController.buscaDespesa);
-// router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
+router.get('/api/buscadespesa', despesaController.buscaDespesa);
+router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
 // router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
 // router.delete('/api/deletadespesa', despesaController.deletaDespesa);
 // router.put('/api/updatepagante', despesaController.atualizarPagante);
@@ -131,7 +131,7 @@ router.delete('/api/deletaformapagamento', paymentMethodController.deletePayment
 
 // // Rotas de conta
 // router.post('/api/novaconta', billController.criarContas); //Criar uma conta, na verdade, é criar uma nova fatura
-// router.get('/api/buscacontaproximavencer', billController.contaProximaVencer);
+router.get('/api/buscacontaproximavencer', billController.contaProximaVencer);
 // router.get('/api/buscaconta', billController.buscaConta);
 // router.get('/api/buscacontamesatual', billController.contaMesAtual);
 // router.post('/api/buscacontadata', billController.buscaContaData);
@@ -146,7 +146,7 @@ router.delete('/api/deletabanco', bankController.deleteBank);
 
 
 // // Rotas de Orçamento
-// router.post('/api/controleorcamento', budgetController.ControleMensal)
+router.post('/api/controleorcamento', budgetController.ControleMensal)
 
 // ... (outras rotas)
 
