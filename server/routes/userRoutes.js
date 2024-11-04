@@ -133,7 +133,7 @@ router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
 // router.post('/api/novaconta', billController.criarContas); //Criar uma conta, na verdade, é criar uma nova fatura
 router.get('/api/buscacontaproximavencer', billController.contaProximaVencer);
 // router.get('/api/buscaconta', billController.buscaConta);
-// router.get('/api/buscacontamesatual', billController.contaMesAtual);
+router.get('/api/buscacontamesatual', billController.contaMesAtual);
 // router.post('/api/buscacontadata', billController.buscaContaData);
 // router.put('/api/pagaconta', billController.pagaConta);
 

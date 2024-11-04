@@ -73,23 +73,21 @@ const criarContas = async (req, res) => {
 };
 const contaMesAtual = async (req, res) => {
     try {
-        const id = req.query.id;
+        const id = parseInt(req.query.id);
         const mesAtual = new Date();
         const mes = mesAtual.getMonth() + 1;
         const ano = mesAtual.getFullYear();
         const iniciaPadraoData = `${ano}-${mes < 10 ? `0${mes}` : mes}`;
 
-        const query = `
-            SELECT * FROM Contas
-            WHERE idUser = ? AND mesCorrespondente = ?
-        `;
-        const valores = [parseInt(id), iniciaPadraoData];
-
-        const [buscaConta] = await db.query(query, valores);
+        // Consulta SQL para buscar contas do usuário em um mês específico
+        const [buscaConta] = await db.execute(
+            `SELECT * FROM Contas WHERE idUser = ? AND mesCorrespondente = ?`,
+            [id, iniciaPadraoData]
+        );
 
         res.json(buscaConta);
     } catch (error) {
-        console.error('Erro ao buscar despesas:', error);
+        console.log('Erro ao buscar despesas:', error);
         res.status(500).json({ message: 'Erro interno do servidor' });
     }
 }
@@ -177,8 +175,8 @@ const contaProximaVencer = async (req, res) => {
         const [buscaConta] = await db.query(
             `SELECT * FROM Contas 
             WHERE idUser = ? 
-            AND dataVencimento >= ? 
-            AND dataVencimento <= ? 
+            AND dataVencimento between ? 
+            AND ? 
             AND pago = 0`,
             [parseInt(id), dataAtualFormatada, dataFimFormatada]
         );
