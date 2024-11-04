@@ -49,7 +49,7 @@ interface User {
 export default function App() {
     const [active, setActive] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { tokenUsuario } = useToken()
+    const { tokenUsuario, setTokenUsuario } = useToken()
     const [opemModalBoasVindas, setopemModalBoasVindas] = useState<boolean>(tokenUsuario?.openModal == 1);
     const { toggleVisibility, visibility } = useVisibility()
     const { toggleVisibilityCampo, visibilityCampo } = useVisibilityCampo()
@@ -89,6 +89,7 @@ export default function App() {
         localStorage.removeItem('token');
         router.push('/pages/login');
         setToken(null);
+        setTokenUsuario(null);
     };
     const teste = (valor: boolean) => {
         if (valor) {
