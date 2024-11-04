@@ -117,10 +117,10 @@ router.delete('/api/deletaformapagamento', paymentMethodController.deletePayment
 
 
 // // Rotas de Despesas
-// router.post('/api/novadespesa', despesaController.novaDespesa);
+router.post('/api/novadespesa', despesaController.novaDespesa);
 router.get('/api/buscadespesa', despesaController.buscaDespesa);
 router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
-// router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
+router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
 // router.delete('/api/deletadespesa', despesaController.deletaDespesa);
 // router.put('/api/updatepagante', despesaController.atualizarPagante);
 

@@ -114,14 +114,31 @@ const buscaDespesaMesAtual = async (req, res) => {
     }
 };
 
-// const buscaDespesaData = async (req, res) => {
-//     try {
-//         const despesasPorData = await expenseController.buscaDespesaData(req.body.data);
-//         res.status(200).json(despesasPorData);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
+const buscaDespesaData = async (req, res) => {
+    console.log("🚀 ~ buscaDespesaData ~ req.body")
+    try {
+        const { data } = req.body;
+        const idUser = req.body.emailUser;
+
+        // Consulta SQL para buscar despesas com mesCorrespondente e idUser específicos
+        const [buscaDespesa] = await db.execute(
+            `SELECT 
+                *, 
+                c.nomeCategoria,
+                f.nomeFormaPagamento
+                FROM Despesas d
+             LEFT JOIN Categoria c ON d.categoriaId = c.id 
+             LEFT JOIN FormaPagamento f ON d.formaDePagamentoId = f.id 
+             WHERE d.mesCorrespondente = ? AND d.idUser = ?`,
+            [data, idUser]
+        );
+
+        res.json(buscaDespesa);
+    } catch (error) {
+        console.log('Erro ao buscar despesas por data:', error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
 
 // const deletaDespesa = async (req, res) => {
 //     try {
@@ -145,7 +162,7 @@ module.exports = {
     novaDespesa,
     buscaDespesa,
     buscaDespesaMesAtual,
-    // buscaDespesaData,
+    buscaDespesaData
     // deletaDespesa,
     // atualizarPagante,
 }

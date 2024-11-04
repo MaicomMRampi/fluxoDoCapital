@@ -279,7 +279,7 @@ export default function ListaDespesa() {
             case "mesCorrespondente":
                 return <p>{AlteraVisualizacaoDataYYYYMM(despesa.mesCorrespondente)}</p>;
             case "categoria":
-                return <p>{despesa.categoria && despesa.categoria.nomeCategoria}</p>;
+                return <p>{despesa.nomeCategoria && despesa.nomeCategoria}</p>;
             case "valorGasto":
                 return (
                     <p>
