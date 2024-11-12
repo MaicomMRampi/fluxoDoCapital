@@ -15,4 +15,20 @@ const pool = mysql.createPool({
 });
 
 
+// Verifica se a conexão foi estabelecida com sucesso
+pool.getConnection((err, connection) => {
+    if (err) {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.error('Conexão com o MySQL foi perdida. Tente novamente.');
+        } else {
+            console.error('Erro ao obter a conexão com o MySQL:', err);
+        }
+    }
+    if (connection) {
+        connection.release();
+        console.log('Conexão com o MySQL estabelecida com sucesso.');
+    }
+});
+
+
 module.exports = pool.promise();

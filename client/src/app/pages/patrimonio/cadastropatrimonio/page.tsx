@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import patrimonios from "./tipoPatrimonio";
 import useVisibilityCampo from '@/components/hooks/useVisibilityCampos';
 export default function App() {
+    const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6 MB em bytes
     const { visibilityCampo } = useVisibilityCampo()
     const [selectedFile, setSelectedFile] = useState<any>(null);
     console.log("🚀 ~ App ~ selectedFile", selectedFile)
@@ -26,6 +27,14 @@ export default function App() {
 
 
     const handleSubmit = async (values: any) => {
+
+        // Verificar o tamanho do arquivo antes de enviar
+        if (selectedFile && selectedFile.size > MAX_FILE_SIZE) {
+            setMessage('O arquivo não pode ultrapassar 6 MB.');
+            setMessageTipo('error');
+            return; // Impede o envio do formulário se o arquivo for grande demais
+        }
+
         const formData = new FormData();
 
         // Adiciona os dados do formulário no FormData
@@ -191,7 +200,7 @@ export default function App() {
                             {message ?
                                 (
                                     <Alert
-                                        severity="success"
+                                        severity={messageTipo as any || 'success'}
                                         variant="filled"
                                     >
                                         {message}

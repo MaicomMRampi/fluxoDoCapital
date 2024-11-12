@@ -179,6 +179,7 @@ export default function SignIn() {
                                     type={isVisible ? "text" : "password"}
                                 />
                                 <Button
+                                    isDisabled={values.cpf.length < 14}
                                     fullWidth
                                     type="submit"
                                     variant="solid"

@@ -187,11 +187,30 @@ const contaProximaVencer = async (req, res) => {
         res.status(500).json({ message: 'Erro interno do servidor' });
     }
 }
+const deletaConta = async (req, res) => {
+    try {
+        const id = parseInt(req.query.id);
+        console.log("🚀 ~ deletaDespesa ~ id", id);
+
+        const query = `DELETE FROM Contas WHERE Contas.id = ${id}`;
+        console.log("🚀 ~ deletaDespesa ~ query", query);
+
+        // Executando a query
+        const teste = await db.execute(query);  // ou db.query(query), dependendo da sua biblioteca
+        console.log("🚀 ~ deletaDespesa ~ teste", teste)
+
+        res.status(200).json({ message: 'Conta deletada' });
+    } catch (error) {
+        console.log('Erro ao deletar Conta:', error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+}
 module.exports = {
     criarContas,
     contaMesAtual,
     buscaContaData,
     contaProximaVencer,
     buscaConta,
+    deletaConta,
     pagaConta
 };

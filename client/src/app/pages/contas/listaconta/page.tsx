@@ -46,7 +46,7 @@ import { CheckIcon } from "@/components/iconesCompartilhados/CheckIcon";
 import { MdBlockFlipped } from "react-icons/md";
 import orcamentoMensalControle from "@/components/funcoes/orcamentoMensalControle";
 import { MdOutlinePayments } from "react-icons/md";
-
+import ModalDelete from "@/components/ModalDelete"
 type Despesa = {
     id: string;
     dataGasto: string;
@@ -81,7 +81,8 @@ export default function ListaConta() {
     const mesVenc = dataAtual.getMonth() + 1;
     const anoVenc = dataAtual.getFullYear();
     const dataInicioControle = `${anoVenc}-${mesVenc < 10 ? `0${mesVenc}` : mesVenc}`;
-
+    const [message, setMessage] = useState("");
+    const [messageTipo, setMessageTipo] = useState<string>()
     const [dataControleMensal, setDataControleMensal] = useState<string>(dataInicioControle);
     const [orcamentoMensal, setOrcamentoMensal] = useState<any>();
     const [mesFatura, setMesFatura] = useState<string>();
@@ -101,8 +102,9 @@ export default function ListaConta() {
     });
     const [modalInfo, setModalInfo] = useState({
         show: false,
-        objeto: {}
+        objeto: null
     })
+    console.log("🚀 ~ ListaConta ~ modalInfo", modalInfo)
     const { tokenUsuario } = useToken()
 
     const buscaContaMesAtual = async () => {
@@ -150,6 +152,35 @@ export default function ListaConta() {
         setOpenModalFatura(true)
     }
 
+    const handleDelete = async () => {
+
+        try {
+            const response = await api.delete('/deletaconta', {
+                params: {
+                    id: modalInfo.objeto,
+                },
+            });
+            if (response.status === 200) {
+                setMessage(response.data.message);
+                setMessageTipo('success');
+                buscaConta();
+                buscaContaMesAtual();
+            }
+            setTimeout(() => {
+                setMessage('');
+                setModalInfo({ show: false, objeto: null });
+
+            }, 2000);
+        } catch (error: any) {
+            setMessage(error.response.data.message);
+            setMessageTipo('error');
+            setTimeout(() => {
+                setMessage('');
+                setModalInfo({ show: false, objeto: null })
+            }, 2000);
+        }
+
+    }
 
 
     const handleDataSelect = async (data: string) => {
@@ -319,7 +350,7 @@ export default function ListaConta() {
                             </span>
                         </Tooltip> */}
                         <Tooltip className="" color="danger" content="Deletar">
-                            <span onClick={() => setModalInfo({ show: true, objeto: despesa })} className="text-lg text-danger cursor-pointer active:opacity-50">
+                            <span onClick={() => console.log({ show: true, objeto: despesa.id })} className="text-lg text-danger cursor-pointer active:opacity-50">
                                 <DeleteIcon className="text-red-500" />
                             </span>
                         </Tooltip>
@@ -390,15 +421,15 @@ export default function ListaConta() {
 
                     <div className="flex gap-3 w-full justify-end">
                         {/* <Button className=" border-orange-500 text-white bg-orange-500" variant="solid" onClick={() => opemModalFechaFatura(DespesaSelect[0].mesCorrespondente)}>Fechar mês</Button> */}
-                        <Link href="/pages/contas/novaconta">
-                            <Button
-                                color="primary"
-                                variant="solid"
-                                endContent={<PlusIcon size={18} width={18} height={18} />}
-                            >
+                        <Button
+                            color="primary"
+                            variant="solid"
+                            endContent={<PlusIcon size={18} width={18} height={18} />}
+                        >
+                            <Link href="/pages/contas/novaconta">
                                 Nova Conta
-                            </Button>
-                        </Link>
+                            </Link>
+                        </Button>
                     </div>
                 </div>
                 <div className="flex gap-4 items-center">
@@ -620,6 +651,14 @@ export default function ListaConta() {
                 onSubmit={() => pagFatura()}
                 mensagem={message}
             /> */}
+            <ModalDelete
+                isOpen={modalInfo.show}
+                onClose={() => setModalInfo({ show: false, objeto: null })}
+                message={message}
+                confirmaEsclusao={handleDelete}
+                objeto={modalInfo.objeto}
+                messageTipo={messageTipo}
+            />
         </>
 
 

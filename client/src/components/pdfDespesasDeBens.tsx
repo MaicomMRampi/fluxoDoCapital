@@ -1,6 +1,7 @@
 "use client";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import currency from "./Currency";
+import AlteraVisualizacaoData from "./funcoes/alteraVisualizacaoData";
 
 interface Props {
     dadosRelatorios: any,
@@ -100,9 +101,9 @@ const DocumentoDespesasBens = ({ dadosRelatorios, tempoPatrimonio, totalDeGastos
                 {dadosRelatorios.map((item: any, index: any) => (
                     <View key={index} style={styles.tableRow}>
                         <Text style={styles.tableCell}>{item.id}</Text>
-                        <Text style={styles.tableCell}>{item.TipoDespesa.nomeDespesa}</Text>
+                        <Text style={styles.tableCell}>{item.nomeDespesa}</Text>
                         <Text style={styles.tableCell}>R$ {currency(item.valor)}</Text>
-                        <Text style={styles.tableCell}>{item.dataAquisicao}</Text>
+                        <Text style={styles.tableCell}>{AlteraVisualizacaoData(item.dataDespesa)}</Text>
                         <Text style={styles.tableCell}>{item.responsavel || "Não informado"}</Text>
                     </View>
                 ))}

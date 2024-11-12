@@ -58,6 +58,8 @@ interface Despesa {
     valor: number;
     Patrimonio: Patrimonio;
     TipoDespesa: TipoDespesa;
+    nomePatrimonio: string;
+    dataAquisicao: string
 }
 
 interface ModalDeleteProps {
@@ -72,6 +74,7 @@ export default function DetalhesDosGastos({ params }: any) {
     const { visibility } = useVisibility()
     const { tokenUsuario } = useToken()
     const [dados, setDados] = useState<Despesa[]>([]);
+    console.log("🚀 ~ DetalhesDosGastos ~ dados", dados)
     const [filtroInativo, setFiltroInativo] = useState('todos');
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState<any>(new Set([]));
@@ -132,7 +135,7 @@ export default function DetalhesDosGastos({ params }: any) {
     };
 
     const [page, setPage] = useState(1);
-    const tempoComPatrimonio = calcularTempo(dados[0]?.Patrimonio?.dataAquisicao)
+    const tempoComPatrimonio = calcularTempo(dados[0]?.dataAquisicao)
 
     const hasSearchFilter = Boolean(filterValue);
     const headerColumns = useMemo(() => {
@@ -252,15 +255,15 @@ export default function DetalhesDosGastos({ params }: any) {
             case "valor":
                 return <p>{visibility ? currency(despesa.valor) : '****'} </p>;
             case "nomePatrimonio":
-                return <p>{despesa.nomepatrimonio}</p>;
+                return <p>{despesa.nomePatrimonio}</p>;
             case "tempo":
-                return <p>{calcularTempo(despesa.dataAquisicao) || "N/A"}</p>;
+                return <p>{calcularTempo(despesa.dataDespesa) || "N/A"}</p>;
             case "despesa.TipoDespesa.nomeDespesa":
-                return <p>{despesa.TipoDespesa.nomeDespesa}</p>;
+                return <p>{despesa.nomeDespesa}</p>;
             case "tipopatrimonio":
                 return <p>{despesa.tipopatrimonio}</p>;
             case "dataAquisicao":
-                return <p>{AlteraVisualizacaoData(despesa.dataAquisicao)}</p>;
+                return <p>{AlteraVisualizacaoData(despesa.dataDespesa)}</p>;
             case "inativo":
                 return <p>
                     {
@@ -379,14 +382,16 @@ export default function DetalhesDosGastos({ params }: any) {
                         <span >Total de <span className='text-primaryTableText'>{visibility ? currency(somaDeDespesasPatrimonio) : '****'}
                         </span>  alocados nesse patrimômio
                         </span>
-                        <span >
-                            <p>
-                                Tempo com o Patrimônio <span className='text-buttonAzulClaro'>
-                                    {dados[0]?.Patrimonio?.nomePatrimonio}
-                                </span> : {calcularTempo(dados[0]?.Patrimonio?.dataAquisicao)}
-                            </p>
-
+                        <span>
+                            {dados && dados.length > 0 ? (
+                                <p>
+                                    Tempo com o Patrimônio <span className='text-buttonAzulClaro'>
+                                        {dados[0].nomePatrimonio}
+                                    </span> : {calcularTempo(dados[0].dataAquisicao)}
+                                </p>
+                            ) : null}
                         </span>
+
                     </div>
                     <label className="flex items-center text-default-400 text-small">
                         Linhas por páginas
@@ -451,7 +456,7 @@ export default function DetalhesDosGastos({ params }: any) {
         <div key={visibility.toString()} className="w-full px-4 py-12 ">
             {/* <p className='text-red-500'>{idPatrimonio}</p> */}
             <Card className={`p-4 bg-BgCardPadrao`} >
-                <p className="pt-2 text-center font-bold">Detalhes do Patrimômio: <span className='text-buttonAzulClaro'>{dados.length > 0 && dados && dados[0].Patrimonio.nomePatrimonio}</span></p>
+                <p className="pt-2 text-center font-bold">Detalhes do Patrimômio: <span className='text-buttonAzulClaro'>{dados.length > 0 && dados && dados[0].nomePatrimonio}</span></p>
                 <Table
                     aria-label="Example table with custom cells, pagination and sorting"
                     isHeaderSticky

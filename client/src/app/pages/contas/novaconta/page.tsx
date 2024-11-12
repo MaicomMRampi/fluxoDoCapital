@@ -129,6 +129,7 @@ export default function NovaConta() {
                                     hideTimeZone
                                     onChange={(val) => setFieldValue("datavencimento", val)}
                                     label="1° Vencimento"
+                                    minValue={today(getLocalTimeZone())}
                                 />
                             </I18nProvider>
                             <div className="flex gap-4">

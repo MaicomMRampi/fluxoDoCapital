@@ -6,7 +6,7 @@ async function ControleMensal(data: string, token: any | undefined) {
         data: data,
         id: token,
     });
-    console.log("🚀 ~ ControleMensal ~ response", response)
+
 
 
     return response.data; // Retorno de exemplo

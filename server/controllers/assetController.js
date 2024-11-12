@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('../config/db');
 const { converteString } = require('../utils/converteString');
+const formatDate = require('../utils/convertData');
 
 const createAsset = async (req, res) => {
     console.log("chegou no controleld");
@@ -74,41 +75,83 @@ const getAssets = async (req, res) => {
 };
 
 const createAssetExpense = async (req, res) => {
-    try {
-        const dados = req.body;
+    const dados = req.body;
+    console.log("🚀 ~ createAssetExpense ~ dados", dados);
 
-        // Prepara a query SQL para inserir a despesa na tabela despesaDeBens
+    try {
+        // Preparando a query de inserção com placeholders para evitar SQL Injection
         const query = `
-            INSERT INTO DespesaDeBens (
-                idPatrimonio, observacao, kmAntigo, kmAtual,
-                tipoDespesaId, valor, responsavel, dataAquisicao,
-                compradorPagador, idUser, observacaoInativacao, inativo
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO despesaDeBens (
+                idPatrimonio,
+                observacao,
+                tipoDespesaId,
+                valor,
+                responsavel,
+                dataAquisicao,
+                compradorPagador,
+                idUser,
+                observacaoInativacao,
+                inativo
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '', 0)
         `;
 
-        const valores = [
-            parseInt(dados.values.nomepatrimonio),
-            dados.values.observacao,
-            dados.values.kmAntigo,
-            dados.values.kmAtual,
-            parseInt(dados.values.tipodespesa),
-            converteString(dados.values.valorgasto),
-            dados.values.responsavel,
-            formatDate(dados.values.dataaquisicao),
-            dados.values.compradorPagador,
-            parseInt(dados.id),
-            '', // observacaoInativacao
-            0 // inativo
-        ];
+        // Substituindo undefined por null para valores não obrigatórios
+        const idPatrimonio = parseInt(dados.values.nomepatrimonio) || null;
+        const observacao = dados.values.observacao || null;
+        const tipoDespesaId = parseInt(dados.values.tipodespesa) || null;
+        const valor = converteString(dados.values.valorgasto) || null;
+        const responsavel = dados.values.responsavel || null;
+        const dataAquisicao = formatDate(dados.values.dataaquisicao) || null;
+        const compradorPagador = dados.values.compradorpagador || null; // Certifique-se de que o nome está correto
+        const idUser = parseInt(dados.id) || null;
 
-        // Executa a query com os valores
-        await db.query(query, valores);
+        // Executando a query com os valores necessários
+        await db.execute(query, [
+            idPatrimonio,
+            observacao,
+            tipoDespesaId,
+            valor,
+            responsavel,
+            dataAquisicao,
+            compradorPagador,
+            idUser
+        ]);
 
         return res.status(200).json({ message: 'Despesa de Bem Cadastrada com Sucesso' });
     } catch (error) {
-        console.error('Erro ao Cadastrar Despesa de Bem:', error);
+        console.log('Erro ao Cadastrar Despesa de Bem:', error);
         return res.status(500).json({ message: 'Erro ao Cadastrar Despesa de Bem', error });
     }
+
+
+};
+
+const getAssetDetails = async (req, res) => {
+    // Lógica para buscar detalhes de patrimônio
+
+    try {
+        const dados = req.query.id;
+
+        // Query SQL para buscar as despesas do patrimônio, incluindo dados de TipoDespesa e Patrimonio
+        const query = `
+           SELECT db.*, td.*, p.*,
+            db.dataaquisicao AS dataDespesa
+
+            FROM despesaDeBens AS db
+            LEFT JOIN TipoDespesa AS td ON db.tipoDespesaId = td.id
+            LEFT JOIN Patrimonio AS p ON db.idPatrimonio = p.id
+            WHERE db.idPatrimonio = ?
+        `;
+
+        // Executando a query com o parâmetro necessário
+        const [despesasPatrimonio] = await db.execute(query, [parseInt(dados)]);
+
+        res.status(200).json(despesasPatrimonio);
+    } catch (error) {
+        console.error('Erro ao buscar despesas do patrimônio:', error);
+        res.status(500).json({ message: 'Despesas não encontradas' });
+    }
+
 };
 
 const getAssetsHome = async (req, res) => {
@@ -128,6 +171,33 @@ const getAssetsHome = async (req, res) => {
         res.status(500).json({ message: 'Despesas não encontradas' });
     }
 };
+const deactivateAsset = async (req, res) => {
+    // Lógica para inativar patrimônio
+
+    const dados = req.body;
+
+    try {
+        // Query SQL para atualizar a despesa de bem
+        const query = `
+        UPDATE despesaDeBens
+        SET observacaoInativacao = ?, inativo = ?
+        WHERE id = ?
+    `;
+
+        // Executando a query com os valores necessários
+        await db.execute(query, [
+            dados.observacao, // Observação de inativação
+            1,                // Valor para o campo "inativo"
+            parseInt(dados.dados) // ID do registro a ser atualizado
+        ]);
+
+        return res.status(200).json({ message: 'Despesa de Bem Cadastrada com Sucesso' });
+    } catch (error) {
+        console.error('Erro ao Cadastrar Despesa de Bem:', error);
+        return res.status(500).json({ message: 'Erro ao Cadastrar Despesa de Bem', error });
+    }
+
+};
 
 const deleteAsset = async (req, res) => {
     // Lógica para deletar patrimônio
@@ -138,5 +208,7 @@ module.exports = {
     getAssets,
     getAssetsHome,
     createAssetExpense,
+    deactivateAsset,
+    getAssetDetails,
     deleteAsset,
 };

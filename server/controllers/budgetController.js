@@ -1,6 +1,5 @@
 const db = require('../config/db');
 const ControleMensal = async (req, res) => {
-    console.log("🚀 ~ ControleMensal chegou")
     try {
         const dados = req.body;
         const idUser = parseInt(dados.id);

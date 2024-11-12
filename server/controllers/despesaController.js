@@ -104,7 +104,6 @@ const buscaDespesaMesAtual = async (req, res) => {
              WHERE Despesas.mesCorrespondente = ? AND Despesas.idUser = ?`,
             [iniciaPadraoData, idUser]
         );
-        console.log("🚀 ~ buscaDespesaMesAtual ~ buscaDespesa", buscaDespesa)
 
         // Retorna o resultado da consulta
         res.json(buscaDespesa);
@@ -140,14 +139,25 @@ const buscaDespesaData = async (req, res) => {
     }
 };
 
-// const deletaDespesa = async (req, res) => {
-//     try {
-//         const resultado = await expenseController.deletaDespesa(req.body.id);
-//         res.status(200).json({ message: 'Despesa deletada com sucesso', resultado });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
+const deletaDespesa = async (req, res) => {
+    try {
+        const id = parseInt(req.query.id);
+        console.log("🚀 ~ deletaDespesa ~ id", id);
+
+        const query = `DELETE FROM Despesas WHERE Despesas.id = ${id}`;
+        console.log("🚀 ~ deletaDespesa ~ query", query);
+
+        // Executando a query
+        const teste = await db.execute(query);  // ou db.query(query), dependendo da sua biblioteca
+        console.log("🚀 ~ deletaDespesa ~ teste", teste)
+
+        res.status(200).json({ message: 'Despesa deletada' });
+    } catch (error) {
+        console.log('Erro ao deletar despesa:', error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+
+};
 
 // const atualizarPagante = async (req, res) => {
 //     try {
@@ -162,7 +172,7 @@ module.exports = {
     novaDespesa,
     buscaDespesa,
     buscaDespesaMesAtual,
-    buscaDespesaData
-    // deletaDespesa,
+    buscaDespesaData,
+    deletaDespesa,
     // atualizarPagante,
 }

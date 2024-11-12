@@ -53,9 +53,9 @@ router.put('/api/fechamodalboasvindas', userController.closeModal);
 // // Rotas de Patrimônio
 router.post('/api/postpatrimonio', uploadDoc.single('document'), assetController.createAsset);
 router.get('/api/buscabem', assetController.getAssets);
-// router.post('/api/despesadeconsumo', assetController.createAssetExpense);
-// router.put('/api/inativarpatrimonio', assetController.deactivateAsset);
-// router.get('/api/detalhespatrimonio', assetController.getAssetDetails);
+router.post('/api/despesadeconsumo', assetController.createAssetExpense);
+router.put('/api/inativarpatrimonio', assetController.deactivateAsset);
+router.get('/api/detalhespatrimonio', assetController.getAssetDetails);
 router.get('/api/detalhespatrimoniohome', assetController.getAssetsHome);
 // router.get('/api/buscadespesasdetalhesnome', assetController.getAssetExpensesByName); //rota nao esta sendo usada
 // router.delete('/api/deletapatrimonio', assetController.deleteAsset);
@@ -121,7 +121,7 @@ router.post('/api/novadespesa', despesaController.novaDespesa);
 router.get('/api/buscadespesa', despesaController.buscaDespesa);
 router.get('/api/buscadespesamesatual', despesaController.buscaDespesaMesAtual);
 router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
-// router.delete('/api/deletadespesa', despesaController.deletaDespesa);
+router.delete('/api/deletadespesa', despesaController.deletaDespesa);
 // router.put('/api/updatepagante', despesaController.atualizarPagante);
 
 
@@ -130,11 +130,13 @@ router.post('/api/buscadespesadata', despesaController.buscaDespesaData);
 
 
 // // Rotas de conta
-// router.post('/api/novaconta', billController.criarContas); //Criar uma conta, na verdade, é criar uma nova fatura
+router.post('/api/novaconta', billController.criarContas); //Criar uma conta, na verdade, é criar uma nova fatura
 router.get('/api/buscacontaproximavencer', billController.contaProximaVencer);
-// router.get('/api/buscaconta', billController.buscaConta);
+router.get('/api/buscaconta', billController.buscaConta);
 router.get('/api/buscacontamesatual', billController.contaMesAtual);
-// router.post('/api/buscacontadata', billController.buscaContaData);
+router.post('/api/buscacontadata', billController.buscaContaData);
+router.delete('/api/deletaconta', billController.deletaConta);
+
 // router.put('/api/pagaconta', billController.pagaConta);
 
 
